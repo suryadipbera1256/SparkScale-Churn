@@ -53,3 +53,16 @@ To achieve true scalability and parallel compute, this project utilizes a specia
 - **Distributed Compute Engine:** Apache Spark (PySpark) SQL 
 - **Machine Learning Library:** Spark MLlib
 - **Containerization & Environment:** Docker (utilized for establishing a local single-node Spark master/worker environment)
+
+## Directory Structure
+```bush
+sparkscale_churn/
+├── data/                   # Raw CSVs (.gitignore)
+├── src/
+│   ├── __init__.py
+│   ├── config.py           # Hardcoded paths and Spark configurations
+│   ├── logger.py           # Custom logging configuration
+│   └── ingest.py           # Week 1: Core ETL Script
+├── docker-compose.yml      # Spark Cluster infrastructure
+├── requirements.txt        # Python dependencies
+└── README.md               # The markdown file we just created
