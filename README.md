@@ -35,7 +35,7 @@ flowchart LR
     J((Churn Predictions<br>Next 30 Days)):::output
 ```
 -----
-## The Need (Problem Statement)
+## Problem Statement
 A major telecommunications provider generates approximately 2 Terabytes (TB) of log data every month, comprising call records, data usage, and customer complaints.
 - **The Technical Bottleneck:** Standard data manipulation tools like Pandas are restricted by single-machine memory limits, resulting in catastrophic memory errors when attempting to load or process this volume of data.
 - **The Business Impact:** Without the ability to process this data, the company cannot identify high-value users who are at risk of leaving the service (churning), leading to significant revenue loss.
