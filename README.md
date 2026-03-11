@@ -62,7 +62,7 @@ sparkscale_churn/
 │   ├── __init__.py
 │   ├── config.py           # Hardcoded paths and Spark configurations
 │   ├── logger.py           # Custom logging configuration
-│   └── ingest.py           # Week 1: Core ETL Script
+│   └── ingest.py           # Core ETL Script
 ├── docker-compose.yml      # Spark Cluster infrastructure
 ├── requirements.txt        # Python dependencies
-└── README.md               # The markdown file we just created
+└── README.md               # The markdown file
