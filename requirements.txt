@@ -1,0 +1,18 @@
+# --- Core Big Data & ML Engine ---
+# PySpark must match the version running in our Docker container (3.4.x)
+pyspark==3.4.1
+
+# --- Data Manipulation & Performance ---
+# PyArrow is critical for optimizing the conversion between Spark DataFrames and Pandas
+pyarrow>=14.0.1
+pandas>=2.1.4
+numpy>=1.26.2
+
+# --- Code Quality & Linting (Dev Tools) ---
+# Ensuring the code meets PEP-8 industry standards
+ruff>=0.1.7
+black>=23.11.0
+
+# --- Testing Framework ---
+# Mandatory for writing unit tests for our ETL pipeline before deployment
+pytest>=7.4.3
