@@ -48,8 +48,59 @@ The primary objective is to engineer a distributed Machine Learning pipeline cap
 - **Scalable Modeling:** Training high-performance models, specifically Distributed Random Forests, using Spark's native MLlib library, which is built for parallel computation.
 - **Pipeline Persistence:** Persisting the entire data transformation sequence—including feature engineering and the final trained model—as a single, reusable Spark ML Pipeline object to enable seamless deployment in a production environment.
 
+### Core Engineering Principles Applied:
+* **Distributed Processing:** Avoids Out-Of-Memory (OOM) errors by utilizing Spark's Lazy Evaluation and distributed Resilient Distributed Datasets (RDDs) / DataFrames.
+* **Infrastructure as Code (IaC):** Custom `Dockerfile` and `docker-compose.yml` ensure identical, reproducible cluster environments, eliminating "it works on my machine" errors.
+* **Modular OOP Design:** Logic is decoupled into class-based modules (`ingest.py`, `features.py`, `train_model.py`) for testability.
+* **Centralized Configuration:** Hardcoded values are extracted into a central `config.py`.
+* **Standardized Auditing:** A custom `logger.py` ensures all distributed tasks are tracked with standard severity levels and timestamps.
+  
 ## Tools & Tech Stack
 To achieve true scalability and parallel compute, this project utilizes a specialized big data technology stack:
 - **Distributed Compute Engine:** Apache Spark (PySpark) SQL 
 - **Machine Learning Library:** Spark MLlib
 - **Containerization & Environment:** Docker (utilized for establishing a local single-node Spark master/worker environment)
+
+## Local Deployment & Execution
+
+### 1. Prerequisites
+* **Docker Desktop** installed and actively running.
+* **Python 3.10+** (Required for local IDE linting and mock data generation).
+
+### 2. Infrastructure Spin-Up
+To build the custom Spark image with the necessary data science dependencies (NumPy, PyArrow) and spin up the cluster in detached mode, run the following commands:
+
+```bash
+# Generate the mock 50,000-row telecom dataset
+python src/generate_mock_data.py
+
+# Build and start the simulated Spark Cluster
+docker-compose up -d --build
+```
+### 3. Pipeline Execution
+Submit the end-to-end job to the Spark Master node. The Master will automatically delegate tasks to the available Worker nodes.
+
+```bash
+docker exec -it sparkscale-churn-spark-master-1 spark-submit /opt/spark/src/train_model.py
+```
+### 4. Automated Execution (Windows)
+A run_pipeline.bat script is included in the root directory. This can be double-clicked or scheduled via Windows Task Scheduler to fully automate the cluster spin-up, job submission, and cluster teardown.
+
+## Directory Structure
+```bush
+sparkscale_churn/
+├── data/                    # Local volume mount for cluster data
+│   └── raw_telecom_logs.csv # Ignored in .git
+├── src/                     # PySpark Application Code
+│   ├── __init__.py
+│   ├── config.py            # Centralized cluster & ML parameters
+│   ├── logger.py            # Custom logging framework
+│   ├── ingest.py            # Phase 1: Distributed ETL
+│   ├── features.py          # Phase 2: Feature Assembly
+│   ├── train_model.py       # Phase 3: MLlib Classification
+│   └── generate_mock_data.py# Dev Tool: Dataset Generator
+├── Dockerfile               # Custom Bitnami Spark image with PyArrow/NumPy
+├── docker-compose.yml       # Infrastructure orchestration
+├── requirements.txt         # Local IDE dependencies
+├── run_pipeline.bat         # End-to-end automation script
+└── README.md
